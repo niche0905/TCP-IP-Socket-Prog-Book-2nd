@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
 	printf("[舅覆] 扩加 檬扁拳 己傍\n");
 
 	// 家南 积己
-	SOCKET sock = socket(AF_INET, SOCK_STREAM, 0);
+	SOCKET sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (sock == INVALID_SOCKET) err_quit("socket()");
 	printf("[舅覆] 家南 积己 己傍\n");
 
