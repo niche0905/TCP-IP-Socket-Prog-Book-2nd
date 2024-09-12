@@ -5,14 +5,14 @@ int main(int argc, char *argv[])
 {
 	// 윈속 초기화
 	WSADATA wsa;
-	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
+	if (WSAStartup(514, &wsa) != 0)
 		return 1;
 	printf("[알림] 윈속 초기화 성공\n");
 
-	//std::cout << wsa.wVersion << std::endl;
-	//std::cout << wsa.wHighVersion << std::endl;
-	//std::cout << wsa.szDescription << std::endl;
-	//std::cout << wsa.szSystemStatus << std::endl;
+	std::cout << "wVersion: " << wsa.wVersion << std::endl;
+	std::cout << "wHighVersion: " << wsa.wHighVersion << std::endl;
+	std::cout << "szDescription: " << wsa.szDescription << std::endl;
+	std::cout << "szSystemStatus: " << wsa.szSystemStatus << std::endl;
 
 	// 소켓 생성
 	SOCKET sock = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP);
