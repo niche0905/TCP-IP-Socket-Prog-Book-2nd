@@ -1,28 +1,36 @@
 #include "..\..\Common.h"
 #include <iostream>
 
+WORD myMakeWord(int frontVer, int backVer)
+{
+	return (backVer << 8) + frontVer;
+
+}
+
 int main(int argc, char *argv[])
 {
 	// 윈속 초기화
 	WSADATA wsa;
-	if (WSAStartup(514, &wsa) != 0)
+	MAKEWORD(2, 2);
+	if (WSAStartup(1, &wsa) != 0)
 		return 1;
-	printf("[알림] 윈속 초기화 성공\n");
+	WSACleanup();
 
-	std::cout << "wVersion: " << wsa.wVersion << std::endl;
-	std::cout << "wHighVersion: " << wsa.wHighVersion << std::endl;
+	printf("[알림] 윈속 초기화를 위한 상위 버전 확인\n");
+	std::cout << "wVersion: " << (int)LOBYTE(wsa.wVersion) << "." << (int)HIBYTE(wsa.wVersion) << std::endl;
+	std::cout << "wHighVersion: " << (int)LOBYTE(wsa.wHighVersion) << "." << (int)HIBYTE(wsa.wHighVersion) << std::endl;
+
+	std::cout << std::endl << std::endl;
+	if (WSAStartup(myMakeWord(LOBYTE(wsa.wHighVersion), HIBYTE(wsa.wHighVersion)), &wsa) != 0)
+		return 1;
+	WSACleanup();
+	printf("[알림] 상위 버전을 사용해서 윈속 초기화 성공\n");
+
+	std::cout << "wVersion: " << (int)LOBYTE(wsa.wVersion) << "." << (int)HIBYTE(wsa.wVersion) << std::endl;
+	std::cout << "wHighVersion: " << (int)LOBYTE(wsa.wHighVersion) << "." << (int)HIBYTE(wsa.wHighVersion) << std::endl;
 	std::cout << "szDescription: " << wsa.szDescription << std::endl;
 	std::cout << "szSystemStatus: " << wsa.szSystemStatus << std::endl;
 
-	// 소켓 생성
-	SOCKET sock = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP);
-	if (sock == INVALID_SOCKET) err_quit("socket()");
-	printf("[알림] 소켓 생성 성공\n");
-
-	// 소켓 닫기
-	closesocket(sock);
-
-	// 윈속 종료
 	WSACleanup();
 	return 0;
 }
