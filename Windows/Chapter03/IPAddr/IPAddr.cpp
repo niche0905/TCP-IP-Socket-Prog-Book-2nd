@@ -15,12 +15,15 @@ int main(int argc, char *argv[])
 	printf("IPv4 주소(변환 전) = %s\n", ipv4test);
 
 	// inet_pton() 함수 연습
-	struct in_addr ipv4num;
-	ipv4num.s_addr = inet_addr(ipv4test);
-	printf("IPv4 주소(변환 후) = %#x\n", ipv4num.s_addr);
+	struct sockaddr_in ipv4num;
+	int soSock = sizeof(ipv4num);
+	WSAStringToAddressA((LPSTR)ipv4test, AF_INET, NULL, (LPSOCKADDR)&ipv4num, &soSock);
+	printf("IPv4 주소(변환 후) = %#x\n", ipv4num.sin_addr.s_addr);
 
+	struct in_addr ipv4addr;
+	ipv4addr.s_addr = ipv4num.sin_addr.s_addr;
 	// inet_ntop() 함수 연습
-	char* ipv4str = inet_ntoa(ipv4num);
+	char* ipv4str = inet_ntoa(ipv4addr);
 	printf("IPv4 주소(다시 변환 후) = %s\n", ipv4str);
 	printf("\n");
 
