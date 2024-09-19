@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 
 	// inet_pton() 함수 연습
 	struct in_addr ipv4num;
-	inet_pton(AF_INET, ipv4test, &ipv4num);
+	ipv4num.s_addr = inet_addr(ipv4test);
 	printf("IPv4 주소(변환 후) = %#x\n", ipv4num.s_addr);
 
 	// inet_ntop() 함수 연습
