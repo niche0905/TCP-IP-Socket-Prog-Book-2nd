@@ -20,10 +20,10 @@ int main(int argc, char *argv[])
 	WSAStringToAddressA((LPSTR)ipv4test, AF_INET, NULL, (LPSOCKADDR)&ipv4num, &soSock);
 	printf("IPv4 주소(변환 후) = %#x\n", ipv4num.sin_addr.s_addr);
 
-	struct in_addr ipv4addr;
-	ipv4addr.s_addr = ipv4num.sin_addr.s_addr;
 	// inet_ntop() 함수 연습
-	char* ipv4str = inet_ntoa(ipv4addr);
+	char ipv4str[INET_ADDRSTRLEN];
+	DWORD soString = sizeof(ipv4str);
+	WSAAddressToStringA((LPSOCKADDR)&ipv4num, sizeof(ipv4num), NULL, ipv4str, &soString);
 	printf("IPv4 주소(다시 변환 후) = %s\n", ipv4str);
 	printf("\n");
 
