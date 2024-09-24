@@ -16,6 +16,23 @@ bool GetIPAddr(const char *name, struct in_addr *addr)
 	return true;
 }
 
+// 도메인 이름 -> IPv4 주소
+bool GetIPInfo(const char* name, struct in_addr* addr)
+{
+	struct addrinfo * res;
+	int status = getaddrinfo(name, "http", NULL, &res);
+	if (status != 0) {
+		err_display("getaddrinfo()");
+		return false;
+	}
+	if (res->ai_family != AF_INET)
+		return false;
+	struct sockaddr_in* ipv4 = (struct sockaddr_in*)res->ai_addr;
+	*addr = ipv4->sin_addr;
+	freeaddrinfo(res);
+	return true;
+}
+
 // IPv4 주소 -> 도메인 이름
 bool GetDomainName(struct in_addr addr, char *name, int namelen)
 {
@@ -42,7 +59,7 @@ int main(int argc, char *argv[])
 
 	// 도메인 이름 -> IP 주소
 	struct in_addr addr;
-	if (GetIPAddr(TESTNAME, &addr)) {
+	if (GetIPInfo(TESTNAME, &addr)) {
 		// 성공이면 결과 출력
 		char str[INET_ADDRSTRLEN];
 		inet_ntop(AF_INET, &addr, str, sizeof(str));
