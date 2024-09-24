@@ -48,6 +48,21 @@ bool GetDomainName(struct in_addr addr, char *name, int namelen)
 	return true;
 }
 
+// IPv4 주소 -> 도메인 이름
+bool GetDomainInfo(struct in_addr addr, char* name, int namelen)
+{
+	struct sockaddr_in sa;
+	memset(&sa, 0, sizeof(sa));
+	sa.sin_addr = addr;
+	sa.sin_family = AF_INET;
+	int status = getnameinfo((sockaddr *)&sa, sizeof(sa), name, namelen, NULL, 0, 0);
+	if (status != 0) {
+		err_display("getnameinfo()");
+		return false;
+	}
+	return true;
+}
+
 int main(int argc, char *argv[])
 {
 	// 윈속 초기화
@@ -67,7 +82,7 @@ int main(int argc, char *argv[])
 
 		// IP 주소 -> 도메인 이름
 		char name[256];
-		if (GetDomainName(addr, name, sizeof(name))) {
+		if (GetDomainInfo(addr, name, sizeof(name))) {
 			// 성공이면 결과 출력
 			printf("도메인 이름(다시 변환 후) = %s\n", name);
 		}
