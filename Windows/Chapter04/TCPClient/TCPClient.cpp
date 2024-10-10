@@ -1,6 +1,6 @@
 #include "..\..\Common.h"
 
-char *SERVERIP = (char *)"127.0.0.1";
+char *SERVERIP = (char *)"192.168.202.96";
 #define SERVERPORT 9000
 #define BUFSIZE    512
 
@@ -9,7 +9,6 @@ int main(int argc, char *argv[])
 	int retval;
 
 	// 명령행 인수가 있으면 IP 주소로 사용
-	if (argc > 1) SERVERIP = argv[1];
 
 	// 윈속 초기화
 	WSADATA wsa;
